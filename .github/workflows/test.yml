@@ -21,4 +21,25 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
+      - name: Install stellar-cli
+        uses: stellar/stellar-cli@c0f4d0da891bbf214c08b8c5035ae6db80e9a3bd # v28.1.0
+        with:
+          # Keep in step with the tag above: the action reads the version from
+          # its ref otherwise, which is a sha here.
+          version: 28.1.0
+
+      # The macros shell out to `stellar registry`, the stellar-registry plugin.
+      - name: Install stellar-registry-cli
+        env:
+          VERSION: 0.3.0
+          SHA256: ce73f23f8940bea93945945d2d1d9c04cd82b8228076496ca5b480cb8c874251
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/srcli.tar.gz \
+            "https://github.com/stellar-registry/cli/releases/download/stellar-registry-cli-v${VERSION}/stellar-registry-cli-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          echo "$SHA256  /tmp/srcli.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/srcli.tar.gz -C "$HOME/.local/bin" stellar-registry
+          stellar registry --help >/dev/null
+
       - run: cargo test --locked
