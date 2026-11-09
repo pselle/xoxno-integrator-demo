@@ -17,9 +17,6 @@ jobs:
       # testnet at build time, from the dry-run registry root.
       STELLAR_NETWORK: testnet
       STELLAR_REGISTRY_CONTRACT_ID: CC26C2PEXKLYI2Z5ZX3WMMERJ6XZPF4D2C4VNSFW2EYYRKPRZFWOYUJ6
-      # `stellar registry fetch-contract-id` needs a source account even to
-      # simulate a read; any funded testnet public key works, no secret.
-      STELLAR_ACCOUNT: GDRNYETHBDEXOXZRMGKFZG23I7ZIGC7YLEINODNPA7WMYBLNIJ5ZAXMW
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -35,8 +32,8 @@ jobs:
       # The macros shell out to `stellar registry`, the stellar-registry plugin.
       - name: Install stellar-registry-cli
         env:
-          VERSION: 0.3.0
-          SHA256: ce73f23f8940bea93945945d2d1d9c04cd82b8228076496ca5b480cb8c874251
+          VERSION: 0.3.1
+          SHA256: aeda92453e771b9105c1dfe0accb75d71639f962897515dcba0b3e843190e0c5
         run: |
           set -euo pipefail
           curl -fsSL -o /tmp/srcli.tar.gz \
