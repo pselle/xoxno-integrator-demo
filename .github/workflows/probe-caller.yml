@@ -1,0 +1,17 @@
+name: probe-caller
+on:
+  push:
+    branches: [probe-env-secrets]
+permissions: {}
+jobs:
+  explicit:
+    uses: ./.github/workflows/probe-called.yml
+    with:
+      environment: probe-env
+    secrets:
+      key: ${{ secrets.PROBE_SECRET }}
+  inherit:
+    uses: ./.github/workflows/probe-called.yml
+    with:
+      environment: probe-env
+    secrets: inherit

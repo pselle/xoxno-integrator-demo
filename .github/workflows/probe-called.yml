@@ -1,0 +1,23 @@
+name: probe-called
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        default: ""
+    secrets:
+      key:
+        required: false
+permissions: {}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - env:
+          PASSED: ${{ secrets.key }}
+          DIRECT: ${{ secrets.PROBE_SECRET }}
+        run: |
+          echo "environment=${{ inputs.environment }}"
+          echo "passed-from-caller length=${#PASSED}"
+          echo "read-directly length=${#DIRECT}"
